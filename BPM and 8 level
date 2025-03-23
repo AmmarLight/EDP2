@@ -111,10 +111,7 @@ int main()
             BPMCount = BPMCount + aveBPM[z];
         }
         int totalBPM = BPMCount / 5;      // Calculate the average
-        if(aveBPM[4] != 0) {
-           // aveBPM.set(0, 0, 0, 0, 0);
-        }
-
+     
     
 
         lcd.printf("BPM: %d\n", totalBPM);
