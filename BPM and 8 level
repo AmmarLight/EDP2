@@ -56,7 +56,7 @@ void Period_Measure()
                 // If the pulse passes Lowthreshold after passing  HighThreshold, then Set Peak_2 to 2 to allow the detection of the 2nd Highthreshold
     if(Final_Value > HighThreshold && Peak_1 == 2 && Peak_2 == 0){     // If the pulse passes the HighThreshold again after passing it once and passing LowThreshold, only then the period is complete              
         Peak_1 = 1;                   // Set Peak_1 back to 1 to prevent a pulse detection twice                                    
-        Peak_2 = 1;                   // Set Peak_1 back to 1 to prevent a pulse detection twice     
+        Peak_2 = 1;                   // Set Peak_2 back to 1 to prevent a pulse detection twice     
         Period = timer.elapsed_time().count() / 1000000.0;       // capture end time 
         timer.stop();           // Stop timer to complete the period cycle
         timer.reset();       // Reset timer to get ready for the next period
@@ -92,7 +92,7 @@ int main()
         input_index = (input_index + 1) % 10;          // Go to the next value in the array and make sure it loops back to 0 so it doesn't give a bound error
 
         rolling_avg = 0.0;
-        for(int i = 0; i < 10; i++) {                  // Add up the last 5 samples
+        for(int i = 0; i < 10; i++) {                  // Add up the last 10 samples
             rolling_avg = rolling_avg + index[i];
         }
         float final_rolling_avg = rolling_avg / 10.0;      // Calculate the average
@@ -110,7 +110,7 @@ int main()
         for(int z = 0; z < 5; z++) {                  // Add up the last 5 samples
             BPMCount = BPMCount + aveBPM[z];
         }
-        int totalBPM = BPMCount / 5;      // Calculate the average
+        int totalBPM = BPMCount / 5;      // Calculate the average BPM to improve accuracy
      
     
 
@@ -121,14 +121,14 @@ int main()
         // Update the digital output level
         digital_output.write(Final_Value / 7.0);            //DIVIDE INTO 8 LEVELS 
 
-        if(Peak_1 != 0 && Peak_2 != 0) {
+        if(Peak_1 != 0 && Peak_2 != 0) {     // If both peaks are detected then reset them to get ready for the new cycle
             Peak_1 = 0; Peak_2 = 0;
             
             led1 = 0;                                       // Turn off the mbed LED
             led2 = 0;                                       // Turn off the mbed LED
             led3 = 0;                                       // Turn off the mbed LED
             led4 = 0;                                       // Turn off the mbed LED
-        }      // If both peaks are detected then reset them to get ready for the new cycle
+        }      
          
-    }  //  thread_sleep_for(15);               // Wait for 10 milliseconds to prevent errors
+    }  
 }
